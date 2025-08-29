@@ -1,0 +1,36 @@
+{% extends "store/base.html" %}
+{% block title %}{{ product.name }} • MyStore{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-6 text-center">
+    <img src="https://via.placeholder.com/800x520.png?text={{ product.name|urlencode }}"
+         class="img-fluid rounded shadow-sm"
+         alt="Imagem do produto {{ product.name }}">
+  </div>
+
+  <div class="col-md-6">
+    <h1 class="mb-1">{{ product.name }}</h1>
+    <p class="text-muted mb-2">{{ product.category }}</p>
+
+    <h3 class="text-primary mb-3">R$ {{ product.price }}</h3>
+
+    <p class="mb-3">{{ product.description }}</p>
+
+    <div class="mb-4">
+      <span class="badge rounded-pill text-bg-success">Em estoque: {{ product.stock }}</span>
+    </div>
+
+    <form action="{% url 'add_to_cart' product.id %}" method="post" class="d-flex gap-2">
+      {% csrf_token %}
+      <div class="input-group" style="max-width: 220px;">
+        <span class="input-group-text">Qtd</span>
+        <input type="number" name="qty" min="1" max="{{ product.stock }}" value="1" class="form-control text-center" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
+    </form>
+
+    <a href="{% url 'product_list' %}" class="btn btn-outline-light mt-3">Voltar</a>
+  </div>
+</div>
+{% endblock %}

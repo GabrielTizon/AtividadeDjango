@@ -1,0 +1,63 @@
+{% extends "store/base.html" %}
+{% block title %}Carrinho • MyStore{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Carrinho</h1>
+
+{% if items %}
+  <div class="table-responsive">
+    <table class="table table-dark table-striped table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th style="width:140px;">Quantidade</th>
+          <th>Preço</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+          <tr>
+            <td>
+              <strong>{{ item.product.name }}</strong><br>
+              <small class="text-muted">{{ item.product.description|default:"" |truncatechars:70 }}</small>
+            </td>
+            <td>
+              <form action="{% url 'update_cart_item' item.product.id %}" method="post" class="d-flex gap-2">
+                {% csrf_token %}
+                <input type="number" name="qty" min="0" value="{{ item.qty }}" class="form-control" style="max-width: 90px;">
+                <button class="btn btn-outline-light btn-sm">Atualizar</button>
+              </form>
+            </td>
+            <td>R$ {{ item.product.price }}</td>
+            <td>R$ {{ item.subtotal }}</td>
+            <td>
+              <form action="{% url 'remove_from_cart' item.product.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-link text-danger p-0">Remover</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="3" class="text-end"><strong>Total</strong></td>
+          <td colspan="2"><strong>R$ {{ total }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex gap-2">
+    <form action="{% url 'clear_cart' %}" method="post">
+      {% csrf_token %}
+      <button class="btn btn-outline-danger">Esvaziar carrinho</button>
+    </form>
+    <a href="{% url 'product_list' %}" class="btn btn-outline-light">Continuar comprando</a>
+    <button class="btn btn-success" disabled>Finalizar compra (demo)</button>
+  </div>
+{% else %}
+  <p>Seu carrinho está vazio.</p>
+  <a href="{% url 'product_list' %}" class="btn btn-primary">Ver produtos</a>
+{% endif %}
+{% endblock %}
