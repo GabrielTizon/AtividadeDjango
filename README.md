@@ -8,22 +8,17 @@ Projeto simples em **Django** para prática em sala de aula.
 - Carrinho de compras (adicionar, atualizar, remover, esvaziar)
 
 ## Como rodar
-1. Clone o repositório:
+Clone o repositório:
    git clone https://github.com/GabrielTizon/AtividadeDjango.git
-   cd AtividadeDjango
-   
-Crie e ative o ambiente virtual:
-  py -m venv venv
-  .\venv\Scripts\activate
 
 Instale as dependências:
-  pip install django
+   pip install django
 
 Rode as migrações:
-  py manage.py migrate
+   py manage.py migrate
 
 Inicie o servidor:
-  py manage.py runserver
+   py manage.py runserver
 
 Acesse em:
 
